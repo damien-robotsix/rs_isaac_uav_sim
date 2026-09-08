@@ -2,7 +2,9 @@
 
 Isaac Sim-based UAV simulation with ROS 2 autonomy.
 
-This repository is undergoing a from-scratch rebuild following the clean-slate architecture defined in [ADR-0001](docs/adr/0001-clean-slate-rebuild.md). This document describes the current skeleton: typed module seams that import cleanly in a CPU Python environment, with no GPU or Isaac Sim dependencies at import time.
+This repository is undergoing a from-scratch rebuild. The current code is a
+minimal skeleton: typed module seams that import cleanly in a CPU Python
+environment, with no GPU or Isaac Sim dependencies at import time.
 
 This repository follows the
 [robotsix-standards](https://damien-robotsix.github.io/robotsix-standards/)
@@ -84,7 +86,3 @@ This runs the full test suite, including tests marked with `@pytest.mark.gpu` an
 ```bash
 ruff check .
 ```
-
-## For More Details
-
-See [ADR-0001](docs/adr/0001-clean-slate-rebuild.md) for the complete architecture rationale and roadmap for the clean-slate rebuild.
