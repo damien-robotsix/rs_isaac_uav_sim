@@ -1,4 +1,4 @@
-"""Interface for the decoupled async HIL (MAVLink/PX4) bridge."""
+"""Interface for the PX4 SITL-lockstep HIL (MAVLink) bridge."""
 
 from __future__ import annotations
 
@@ -7,11 +7,14 @@ from typing import Any
 
 
 class HilBridge(ABC):
-    """Async hardware-in-the-loop bridge to PX4 over MAVLink.
+    """Hardware-in-the-loop bridge to PX4 over MAVLink (SITL lockstep).
 
-    Implementations exchange sensor and actuator messages with PX4
-    asynchronously, decoupled from the simulation step cadence so the
-    sim's real-time budget is not hostage to network latency.
+    PX4 attaches through its SITL lockstep interface: each sensor message
+    carries the simulation timestamp, and PX4 rebases its monotonic clock
+    onto it. PX4 therefore waits for the simulation, never the reverse --
+    the simulation is the time master. Because the link is plain MAVLink
+    over TCP (one simulator channel per instance), PX4 instances may run
+    on other hosts.
     """
 
     @abstractmethod
@@ -25,8 +28,13 @@ class HilBridge(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def send_sensors(self, sensor_state: Any) -> None:
-        """Publish the latest simulated sensor state to PX4."""
+    async def send_sensors(self, sensor_state: Any, sim_time_us: int) -> None:
+        """Publish simulated sensor state to PX4, stamped with sim time.
+
+        ``sim_time_us`` is the scheduler's ``sim_time`` in microseconds;
+        PX4 rebases its clock onto this stamp (SITL lockstep), so it must
+        be the simulation clock, never wall-clock time.
+        """
         raise NotImplementedError
 
     @abstractmethod
