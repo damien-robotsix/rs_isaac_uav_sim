@@ -1,0 +1,2 @@
+test_command: pytest -m "not gpu and not isaac"
+languages: [python]
