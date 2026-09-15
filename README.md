@@ -74,16 +74,18 @@ The `rs_isaac_uav_sim` package defines four typed module seams that serve as the
 - Responsibility: Compute dynamics for all drones in a single tensorized step on GPU.
 - Import-time cost: None (no GPU or torch imports at module load).
 
-### `rs_isaac_uav_sim.hil`
+### `rs_isaac_uav_sim.sitl`
 
 **PX4 autopilot bridge (SITL lockstep over MAVLink).**
 
-- Interface: `HilBridge` (ABC)
-- Methods: `start()`, `stop()`, `send_sensors(sensor_state)`, `recv_actuators()`
+- Interface: `SitlBridge` (ABC)
+- Methods: `start()`, `stop()`, `send_sensors(sensor_state, sim_time)`,
+  `recv_actuators()`
 - Responsibility: Exchange MAVLink messages with PX4 over the SITL lockstep
-  interface — sensor messages carry the simulation timestamp so PX4 slaves its
-  clock to simulation time; actuator commands are returned per step. PX4 waits
-  for the simulation, never the reverse.
+  interface — the simulation acts as the MAVLink TCP server and time master, so
+  sensor messages carry the sim-time stamp (`time_usec = sim_time`) and PX4
+  slaves its clock to simulation time; actuator commands are returned per step.
+  PX4 waits for the simulation, never the reverse.
 - Import-time cost: None (no MAVLink transport imports at module load).
 
 ### `rs_isaac_uav_sim.scheduler`
@@ -91,7 +93,8 @@ The `rs_isaac_uav_sim` package defines four typed module seams that serve as the
 **Simulation-clock scheduler with a user speed factor.**
 
 - Interface: `Scheduler` (ABC)
-- Methods: `start()`, `tick()`, `overrun()`
+- Methods: `start()`, `tick()`, `overrun()`, `sim_time()`, `speed_factor`
+  (property), `time_scale()`
 - Responsibility: Own the simulation clock (`sim_time`) and step cadence. A
   configurable speed factor governs pacing — `0` runs as fast as compute
   allows, a positive value caps the step rate to that multiple of real time —

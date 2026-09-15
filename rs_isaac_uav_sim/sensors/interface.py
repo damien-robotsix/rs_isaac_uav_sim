@@ -10,7 +10,7 @@ class SensorModel(ABC):
     """Derives sensor readings from tensorized vehicle state.
 
     Implementations map the physics state of all vehicles to simulated
-    sensor outputs (e.g. IMU, GPS) that feed the HIL bridge.
+    sensor outputs (e.g. IMU, GPS) that feed the SITL bridge.
     """
 
     @abstractmethod

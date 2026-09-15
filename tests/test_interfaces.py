@@ -4,10 +4,10 @@ import inspect
 
 import pytest
 
-from rs_isaac_uav_sim.hil import HilBridge
 from rs_isaac_uav_sim.physics import PhysicsEngine
 from rs_isaac_uav_sim.scheduler import Scheduler
 from rs_isaac_uav_sim.sensors import SensorModel
+from rs_isaac_uav_sim.sitl import SitlBridge
 
 
 @pytest.mark.parametrize(
@@ -23,22 +23,25 @@ from rs_isaac_uav_sim.sensors import SensorModel
             },
         ),
         (
-            HilBridge,
+            SitlBridge,
             {"start", "stop", "send_sensors", "recv_actuators"},
             {
                 "start": (True, ()),
                 "stop": (True, ()),
-                "send_sensors": (True, ("sensor_state",)),
+                "send_sensors": (True, ("sensor_state", "sim_time")),
                 "recv_actuators": (True, ()),
             },
         ),
         (
             Scheduler,
-            {"start", "tick", "overrun"},
+            {"start", "tick", "overrun", "sim_time", "speed_factor", "time_scale"},
             {
                 "start": (False, ()),
                 "tick": (False, ()),
                 "overrun": (False, ()),
+                "sim_time": (False, ()),
+                "speed_factor": (False, ()),
+                "time_scale": (False, ()),
             },
         ),
         (
@@ -70,9 +73,19 @@ def _assert_abstract_signature(interface, method_name, is_async, expected_params
     """Assert an abstract method's async-ness and parameter names/kinds.
 
     ``expected_params`` lists the positional-or-keyword parameters
-    (``self`` excluded). Async-ness is pinned so the HilBridge coroutine
+    (``self`` excluded). Async-ness is pinned so the SitlBridge coroutine
     methods cannot silently become synchronous (or vice versa).
+
+    Abstract properties (e.g. ``Scheduler.speed_factor``) are asserted to
+    be non-async properties with an abstract getter; parameter checks do
+    not apply to them.
     """
+    raw = inspect.getattr_static(interface, method_name)
+    if isinstance(raw, property):
+        assert not is_async
+        assert raw.fget is not None
+        assert not inspect.iscoroutinefunction(raw.fget)
+        return
     func = getattr(interface, method_name)
     assert inspect.iscoroutinefunction(func) == is_async
     signature = inspect.signature(func)
