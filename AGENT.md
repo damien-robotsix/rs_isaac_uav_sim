@@ -10,7 +10,7 @@ conventions.
 `rs_isaac_uav_sim` provides an Isaac Sim-based UAV simulation with ROS 2
 autonomy. It is a Python project undergoing a from-scratch rebuild. The
 current code is a minimal skeleton defining four typed module seams —
-`physics` (tensorized on-GPU dynamics), `hil` (decoupled async MAVLink/PX4
+`physics` (tensorized on-GPU dynamics), `sitl` (SITL-lockstep MAVLink/PX4
 bridge), `scheduler` (explicit real-time scheduler), and `sensors` (sensor
 model derivation) — each importing cleanly in a plain CPU Python environment
 with no GPU or Isaac Sim dependencies at import time.
