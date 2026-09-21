@@ -32,5 +32,8 @@ jobs:
       - name: Lint
         run: ruff check .
 
+      - name: Type check
+        run: mypy rs_isaac_uav_sim
+
       - name: Test
         run: pytest -m "not gpu and not isaac"

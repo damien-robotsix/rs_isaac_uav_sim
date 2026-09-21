@@ -15,6 +15,7 @@ dependencies = []
 dev = [
   "pytest",
   "ruff",
+  "mypy",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -22,6 +23,12 @@ packages = ["rs_isaac_uav_sim"]
 
 [tool.hatch.version]
 path = "rs_isaac_uav_sim/__init__.py"
+
+[tool.mypy]
+python_version = "3.11"
+disallow_untyped_defs = false
+disallow_any_unimported = false
+warn_unused_ignores = true
 
 [tool.pytest.ini_options]
 markers = [
