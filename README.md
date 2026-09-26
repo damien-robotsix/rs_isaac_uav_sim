@@ -59,7 +59,7 @@ with PX4 slaved to simulation time, that's what this repository is for.
 pip install -e ".[dev]"
 ```
 
-This installs the package in editable mode with the `dev` extra group, which includes `pytest` and `ruff`.
+This installs the package in editable mode with the `dev` extra group, which includes `pytest`, `ruff`, and `mypy`.
 
 ## Package Structure
 
@@ -134,4 +134,10 @@ This runs the full test suite, including tests marked with `@pytest.mark.gpu` an
 
 ```bash
 ruff check .
+```
+
+### Type-check the code
+
+```bash
+mypy rs_isaac_uav_sim
 ```
