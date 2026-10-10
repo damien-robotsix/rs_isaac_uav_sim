@@ -1,6 +1,7 @@
 """Tests that each module seam exposes its abstract interface."""
 
 import inspect
+from pathlib import Path
 
 import pytest
 
@@ -67,6 +68,27 @@ def test_interface_declares_abstract_methods(
     assert set(expected_signatures) == expected_methods
     for method_name, (is_async, expected_params) in expected_signatures.items():
         _assert_abstract_signature(interface, method_name, is_async, expected_params)
+
+
+@pytest.mark.parametrize(
+    "interface",
+    [PhysicsEngine, SitlBridge, Scheduler, SensorModel],
+)
+def test_readme_lists_abstract_methods(interface):
+    # The README "Package Structure" section mirrors each seam's abstract
+    # method set by hand; nothing else verifies it, so it can silently drift
+    # when a seam gains, renames, or drops an abstract method. This is a
+    # lightweight presence check (not prose parsing): every abstract method
+    # name must appear somewhere in README.md.
+    readme = Path(__file__).resolve().parents[2] / "README.md"
+    readme_text = readme.read_text(encoding="utf-8")
+    missing = [
+        name for name in interface.__abstractmethods__ if name not in readme_text
+    ]
+    assert not missing, (
+        f"{interface.__name__} abstract methods missing from README.md "
+        f"Package Structure: {sorted(missing)}"
+    )
 
 
 def _assert_abstract_signature(interface, method_name, is_async, expected_params):
