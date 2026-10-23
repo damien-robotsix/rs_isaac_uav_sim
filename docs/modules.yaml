@@ -1,0 +1,92 @@
+# Module taxonomy for rs_isaac_uav_sim.
+# Validate with:  robotsix-modules validate docs/modules.yaml
+# The package is not under src/, so every module lists its paths explicitly.
+modules:
+  - id: root
+    description: >
+      Root-level project files: package config, lockfile, VCS ignore
+      rules, agent/contributor guidance, security policy, licence and
+      mill periodic-agent configuration.
+    paths:
+      - README.md
+      - AGENT.md
+      - SECURITY.md
+      - LICENSE
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+      - .robotsix-mill/**
+    dependencies:
+      - docs
+
+  - id: docs
+    description: >
+      Project-level documentation: architecture decision records and
+      the module taxonomy file itself.
+    paths:
+      - docs/adr/**
+      - docs/modules.yaml
+
+  - id: core
+    description: >
+      Top-level package initialiser for rs_isaac_uav_sim, holding the
+      package version and docstring.
+    paths:
+      - rs_isaac_uav_sim/__init__.py
+
+  - id: physics
+    description: >
+      Typed seam for the tensorized on-GPU vehicle dynamics; imports
+      cleanly on a CPU-only Python environment.
+    paths:
+      - rs_isaac_uav_sim/physics/**
+      - tests/physics/**
+      - docs/physics/**
+    dependencies:
+      - core
+
+  - id: scheduler
+    description: >
+      Typed seam for the explicit real-time scheduler that orders
+      physics, sensor and SITL steps.
+    paths:
+      - rs_isaac_uav_sim/scheduler/**
+      - tests/scheduler/**
+      - docs/scheduler/**
+    dependencies:
+      - core
+
+  - id: sensors
+    description: >
+      Typed seam for deriving sensor models from the simulated
+      vehicle state.
+    paths:
+      - rs_isaac_uav_sim/sensors/**
+      - tests/sensors/**
+      - docs/sensors/**
+    dependencies:
+      - core
+
+  - id: sitl
+    description: >
+      Typed seam for the SITL-lockstep MAVLink/PX4 bridge.
+    paths:
+      - rs_isaac_uav_sim/sitl/**
+      - tests/sitl/**
+      - docs/sitl/**
+    dependencies:
+      - core
+
+  - id: tests
+    description: >
+      Shared test package and cross-module integration tests (package
+      import, interface seams, GPU marker deselection).
+    paths:
+      - tests/__init__.py
+      - tests/integration/**
+    dependencies:
+      - core
+      - physics
+      - scheduler
+      - sensors
+      - sitl
