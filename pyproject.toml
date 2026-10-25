@@ -16,7 +16,13 @@ dev = [
   "pytest",
   "ruff",
   "mypy",
+  # Module-taxonomy drift checks (docs/modules.yaml). Not on PyPI, and it
+  # requires Python >= 3.14, so it is only installed on 3.14+ interpreters.
+  "robotsix-modules @ git+https://github.com/damien-robotsix/robotsix-modules@v0.5.3 ; python_version >= '3.14'",
 ]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["rs_isaac_uav_sim"]
