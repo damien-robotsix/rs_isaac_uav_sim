@@ -46,6 +46,18 @@ jobs:
       - name: Test
         run: pytest -m "not gpu and not isaac"
 
+  security:
+    # TruffleHog secret scan plus pip-audit of the committed uv.lock via the
+    # shared fleet workflow. No extras: the project has no optional runtime
+    # extras to audit (the shared default `tracing` does not exist here).
+    permissions:
+      contents: read
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/python-security.yml@86a722f2938c1dda343bbf8d3c5989613cbf1794  # v1.5.0
+    with:
+      python-version: "3.11"
+      install-extras: ""
+      run-trufflehog: true
+
   modules-drift:
     name: modules-drift
     # robotsix-modules requires Python >= 3.14, so the taxonomy checks run in
