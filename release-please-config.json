@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "python",
+  "changelog-path": "CHANGELOG.md",
+  "include-v-in-tag": true,
+  "bump-minor-pre-major": true,
+  "packages": {
+    ".": {
+      "package-name": "rs_isaac_uav_sim",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "rs_isaac_uav_sim/__init__.py"
+        }
+      ]
+    }
+  }
+}

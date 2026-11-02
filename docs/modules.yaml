@@ -16,6 +16,8 @@ modules:
       - uv.lock
       - .gitignore
       - .secrets-patterns-excluded
+      - release-please-config.json
+      - .release-please-manifest.json
       - .robotsix-mill/**
     dependencies:
       - docs
