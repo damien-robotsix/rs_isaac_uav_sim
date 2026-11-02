@@ -35,6 +35,11 @@ with no GPU or Isaac Sim dependencies at import time.
   lints, and runs the test suite.
 - Dependencies are kept up to date via Dependabot
   (see `.github/dependabot.yml`).
+- Releases are automated by release-please (see
+  `release-please-config.json` and `.github/workflows/release-please.yml`).
+  Do not bump `__version__` in `rs_isaac_uav_sim/__init__.py` or edit
+  `CHANGELOG.md` by hand; the release PR updates the version, the
+  `.release-please-manifest.json` entry and the changelog.
 
 ## Security
 
