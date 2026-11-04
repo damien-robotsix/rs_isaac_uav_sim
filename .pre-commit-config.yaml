@@ -26,4 +26,8 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
-        exclude: uv\.lock
+        # Keep in sync with .secrets-patterns-excluded. Exclusions live in
+        # pre-commit's `exclude:` regex because detect-secrets'
+        # `--exclude-files` takes a regex, not a path to a patterns file,
+        # so `--exclude-files .secrets-patterns-excluded` would be a no-op.
+        exclude: ^(uv\.lock|\.secrets\.baseline)$
