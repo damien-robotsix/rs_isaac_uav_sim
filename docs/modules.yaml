@@ -15,6 +15,7 @@ modules:
       - pyproject.toml
       - uv.lock
       - .gitignore
+      - .secrets-patterns-excluded
       - .robotsix-mill/**
     dependencies:
       - docs
