@@ -17,6 +17,7 @@ modules:
       - .gitignore
       - .secrets-patterns-excluded
       - .pre-commit-config.yaml
+      - .secrets.baseline
       - .robotsix-mill/**
     dependencies:
       - docs
