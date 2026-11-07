@@ -18,6 +18,8 @@ modules:
       - .secrets-patterns-excluded
       - .pre-commit-config.yaml
       - .secrets.baseline
+      - release-please-config.json
+      - .release-please-manifest.json
       - .robotsix-mill/**
     dependencies:
       - docs
