@@ -136,6 +136,14 @@ This runs the full test suite, including tests marked with `@pytest.mark.gpu` an
 ruff check .
 ```
 
+### Check formatting
+
+```bash
+ruff format --check .
+```
+
+CI fails if any file would be reformatted; run `ruff format .` to fix.
+
 ### Type-check the code
 
 ```bash
