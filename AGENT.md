@@ -28,6 +28,12 @@ with no GPU or Isaac Sim dependencies at import time.
   superseded or removed as the rebuild lands; state the rationale inline so
   comments never dangle on a document that no longer exists.
 
+## Project layout
+
+- Every new top-level file or directory, including dot-directories such as
+  `.github/`, must be listed under an owning module in `docs/modules.yaml`
+  in the same change that adds it.
+
 ## Development
 
 - CI runs on every push and pull request (see
