@@ -16,6 +16,7 @@ modules:
       - uv.lock
       - .gitignore
       - .secrets-patterns-excluded
+      - .pre-commit-config.yaml
       - .robotsix-mill/**
     dependencies:
       - docs
