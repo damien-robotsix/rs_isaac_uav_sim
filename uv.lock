@@ -578,7 +578,7 @@ wheels = [
 name = "rs-isaac-uav-sim"
 source = { editable = "." }
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "mypy" },
     { name = "pytest" },
@@ -587,13 +587,14 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "mypy", marker = "extra == 'dev'" },
-    { name = "pytest", marker = "extra == 'dev'" },
-    { name = "robotsix-modules", marker = "python_full_version >= '3.14' and extra == 'dev'", git = "https://github.com/damien-robotsix/robotsix-modules?rev=v0.5.3" },
-    { name = "ruff", marker = "extra == 'dev'" },
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "robotsix-modules", marker = "python_full_version >= '3.14'", git = "https://github.com/damien-robotsix/robotsix-modules?rev=v0.5.3" },
+    { name = "ruff" },
 ]
-provides-extras = ["dev"]
 
 [[package]]
 name = "ruff"

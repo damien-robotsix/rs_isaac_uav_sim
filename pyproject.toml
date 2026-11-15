@@ -11,7 +11,7 @@ requires-python = ">=3.11"  # Isaac Sim 5.x bundled Python; see AGENT.md "Python
 license = { file = "LICENSE" }
 dependencies = []
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
   "pytest",
   "ruff",
@@ -20,6 +20,9 @@ dev = [
   # requires Python >= 3.14, so it is only installed on 3.14+ interpreters.
   "robotsix-modules @ git+https://github.com/damien-robotsix/robotsix-modules@v0.5.3 ; python_version >= '3.14'",
 ]
+
+[tool.uv]
+default-groups = ["dev"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
@@ -33,6 +36,28 @@ path = "rs_isaac_uav_sim/__init__.py"
 [tool.mypy]
 python_version = "3.11"
 strict = true
+warn_unused_ignores = true
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "S"]
+extend-select = [
+    "SIM",   # flake8-simplify
+    "C4",    # flake8-comprehensions
+    "LOG",   # flake8-logging
+    "G",     # flake8-logging-format
+    "ERA",   # eradicate
+    "PGH",   # pygrep-hooks
+    "RUF",   # ruff-specific rules
+    "PT",    # flake8-pytest-style
+]
+ignore = ["PT006"]
+
+[tool.ruff.lint.per-file-ignores]
+# pytest relies on bare `assert`.
+"tests/**" = ["S101"]
 
 [tool.pytest.ini_options]
 markers = [
