@@ -42,6 +42,24 @@ with no GPU or Isaac Sim dependencies at import time.
 - Dependencies are kept up to date via Dependabot
   (see `.github/dependabot.yml`).
 
+## Python version exception
+
+- The project pins Python 3.11 (`requires-python = ">=3.11"` and mypy
+  `python_version = "3.11"` in `pyproject.toml`, and the `3.11` test matrix
+  and `python-security` job in `.github/workflows/ci.yml`). The reason is
+  that Isaac Sim 5.x bundles a Python 3.11 interpreter, and the simulation
+  code must run inside that interpreter.
+- The robotsix-standards
+  [Python `requires-python` rule](https://damien-robotsix.github.io/robotsix-standards/python/#requires-python)
+  sets a `>= 3.14` fleet baseline. It allows a lower floor only when a real
+  consumer runs an older runtime, and Isaac Sim is that consumer here. The
+  3.11 pin is that documented exception, not drift.
+- The `modules-drift` CI job runs on Python 3.14 on purpose, because
+  robotsix-modules requires Python >= 3.14. Only that job uses 3.14.
+- Do not bump the pin to match the fleet baseline. Raise it only when Isaac
+  Sim's bundled Python version changes, and update every location listed
+  above in the same change.
+
 ## Security
 
 See [SECURITY.md](SECURITY.md) for how to report vulnerabilities.
