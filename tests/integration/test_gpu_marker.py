@@ -6,10 +6,16 @@ demonstrates the marker mechanism without requiring real GPU/Isaac
 hardware.
 """
 
+import shutil
+
 import pytest
 
 
 @pytest.mark.gpu
+@pytest.mark.skipif(
+    shutil.which("nvidia-smi") is None,
+    reason="GPU tests must not run on a machine without an NVIDIA driver.",
+)
 def test_gpu_placeholder():
     # Would exercise on-GPU dynamics; skipped on standard CI.
     raise AssertionError("GPU tests must not run on standard CPU-only CI.")
