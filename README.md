@@ -56,10 +56,12 @@ with PX4 slaved to simulation time, that's what this repository is for.
 
 ```bash
 # Install the package and development dependencies
-pip install -e ".[dev]"
+uv sync
+# or, with pip >= 25.1:
+pip install -e . --group dev
 ```
 
-This installs the package in editable mode with the `dev` extra group, which includes `pytest`, `ruff`, and `mypy`.
+This installs the package in editable mode with the `dev` dependency group (PEP 735), which includes `pytest`, `ruff`, and `mypy`. `uv sync` installs it by default.
 
 ## Package Structure
 
