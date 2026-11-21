@@ -6,6 +6,6 @@ plain CPU Python environment and pull in no Isaac Sim, GPU or torch
 dependencies at import time.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.1"  # x-release-please-version
 
 __all__ = ["__version__"]
