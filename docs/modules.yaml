@@ -36,6 +36,8 @@ modules:
       package version and docstring.
     paths:
       - rs_isaac_uav_sim/__init__.py
+      - tests/core/**
+      - docs/core/**
 
   - id: physics
     description: >
@@ -82,8 +84,8 @@ modules:
 
   - id: tests
     description: >
-      Shared test package and cross-module integration tests (package
-      import, interface seams, GPU marker deselection).
+      Shared test package and cross-module integration tests
+      (interface seams, GPU marker deselection).
     paths:
       - tests/__init__.py
       - tests/integration/**
