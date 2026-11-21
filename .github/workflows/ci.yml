@@ -40,6 +40,9 @@ jobs:
       - name: Lint
         run: ruff check .
 
+      - name: Format check
+        run: ruff format --check .
+
       - name: Type check
         run: mypy rs_isaac_uav_sim
 
