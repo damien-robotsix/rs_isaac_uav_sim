@@ -32,19 +32,26 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          enable-cache: true
+
+      # Install exactly the committed uv.lock so the tested environment
+      # matches what the security job pip-audits.
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+          uv lock --check
+          uv sync --locked --extra dev
 
       - name: Lint
-        run: ruff check .
+        run: uv run ruff check .
 
       - name: Type check
-        run: mypy rs_isaac_uav_sim
+        run: uv run mypy rs_isaac_uav_sim
 
       - name: Test
-        run: pytest -m "not gpu and not isaac"
+        run: uv run pytest -m "not gpu and not isaac"
 
   security:
     # TruffleHog secret scan plus pip-audit of the committed uv.lock via the
@@ -75,16 +82,21 @@ jobs:
         with:
           python-version: "3.14"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          enable-cache: true
+
+      # Install from the committed uv.lock (Python 3.14 also pulls in
+      # robotsix-modules via the dev extra).
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+        run: uv sync --locked --extra dev
 
       - name: Validate module taxonomy
-        run: robotsix-modules validate docs/modules.yaml
+        run: uv run robotsix-modules validate docs/modules.yaml
 
       - name: Check module registration
-        run: robotsix-modules check-registration docs/modules.yaml
+        run: uv run robotsix-modules check-registration docs/modules.yaml
 
       - name: Validate module paths
-        run: robotsix-modules validate-paths docs/modules.yaml
+        run: uv run robotsix-modules validate-paths docs/modules.yaml
